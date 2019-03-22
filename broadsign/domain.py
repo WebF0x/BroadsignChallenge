@@ -1,7 +1,8 @@
 import netaddr
 from netaddr import EUI
 
-from src.exceptions import InvalidMacAddressFormat
+from broadsign.exceptions import InvalidMacAddressFormat
+from broadsign.mac_address import MAC_ADDRESS_CHAR_LENGTH
 
 
 class Domain(object):
@@ -11,6 +12,8 @@ class Domain(object):
         self.mac_addresses = mac_addresses
 
     def add_mac_address(self, mac_address):
+        if len(mac_address) != MAC_ADDRESS_CHAR_LENGTH:
+            raise InvalidMacAddressFormat()
         try:
             self.mac_addresses.append(EUI(mac_address))
         except netaddr.core.AddrFormatError:

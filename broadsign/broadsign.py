@@ -1,4 +1,4 @@
-from src.domain import Domain
+from broadsign.domain import Domain
 
 
 def main():

@@ -1,9 +1,8 @@
 import pytest
 
-from src.domain import Domain
-from netaddr import EUI
+from broadsign.domain import Domain
 
-from src.exceptions import InvalidMacAddressFormat
+from broadsign.exceptions import InvalidMacAddressFormat
 
 
 def test_constructor():
@@ -35,4 +34,4 @@ def test_add_mac_address_with_invalid_character_raises_invalid_mac_address_forma
 def test_add_mac_address_with_too_few_characters_raises_invalid_mac_address_format_exception():
     domain = Domain(None, None, [])
     with pytest.raises(InvalidMacAddressFormat):
-        domain.add_mac_address('00:00')
+        domain.add_mac_address('00:00:00')
