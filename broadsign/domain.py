@@ -2,7 +2,7 @@ import netaddr
 from netaddr import EUI
 
 from broadsign.exceptions import InvalidMacAddressFormat, InvalidMacAddressDomain
-from broadsign.mac_address import MAC_ADDRESS_CHAR_LENGTH, DOMAIN_ID_CHAR_LENGTH
+from broadsign.mac_address import MAC_ADDRESS_CHAR_LENGTH, DOMAIN_ID_CHAR_LENGTH, int_to_mac_address
 
 
 class Domain(object):
@@ -26,3 +26,11 @@ class Domain(object):
         domain_id = mac_address[:DOMAIN_ID_CHAR_LENGTH]
         hexadecimal_domain_id = domain_id.replace(':', '')
         return int(hexadecimal_domain_id, 16) == self.id
+
+    def get_next_unique_mac_address(self):
+        min_address = self.id * 16 ** 8
+        max_address = (self.id + 1) * 16 ** 8 - 1
+        for potential_next_address in range(min_address, max_address + 1):
+            if potential_next_address not in self.mac_addresses:
+                return int_to_mac_address(potential_next_address)
+        raise Exception()

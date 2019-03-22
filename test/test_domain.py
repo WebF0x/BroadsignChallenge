@@ -38,3 +38,16 @@ def test_prevent_adding_mac_addresses_that_do_not_match_the_domain_id():
         Domain(int('0000', 16), None, []).add_mac_address('FF:FF:00:00:00:00')
     with pytest.raises(InvalidMacAddressDomain):
         Domain(int('FFFF', 16), None, []).add_mac_address('FF:FE:00:00:00:00')
+
+
+def test_get_next_unique_mac_address_when_domain_is_empty():
+    domain = Domain(int('1234', 16), None, [])
+    assert domain.get_next_unique_mac_address() == '12:34:00:00:00:00'
+
+
+def test_get_next_unique_mac_address_when_domain_contains_addresses_already():
+    domain = Domain(int('1234', 16), None, [])
+    domain.add_mac_address('12:34:00:00:00:00')
+    domain.add_mac_address('12:34:00:00:00:01')
+    domain.add_mac_address('12:34:00:00:00:02')
+    assert domain.get_next_unique_mac_address() == '12:34:00:00:00:03'

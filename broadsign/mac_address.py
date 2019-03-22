@@ -1,3 +1,5 @@
+from textwrap import wrap
+
 import netaddr
 from netaddr import EUI
 
@@ -17,3 +19,10 @@ def make_mac_address(domain_id, sub_mac_address):
         return EUI(domain_id + ':' + sub_mac_address)
     except netaddr.core.AddrFormatError:
         raise InvalidMacAddressFormat()
+
+
+def int_to_mac_address(int_address):
+    hex_address = format(int_address, 'X')
+    left_padded_hex_address = hex_address.zfill(12)
+    address_bytes = wrap(left_padded_hex_address, 2)
+    return ':'.join(address_bytes)

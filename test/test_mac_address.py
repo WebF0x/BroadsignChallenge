@@ -1,6 +1,6 @@
 import pytest
 
-from broadsign.mac_address import make_mac_address
+from broadsign.mac_address import make_mac_address, int_to_mac_address
 from broadsign.exceptions import InvalidMacAddressFormat
 
 
@@ -31,3 +31,9 @@ def test_make_mac_address_with_bad_sub_mac_address_raises_invalid_mac_address_fo
 def test_add_mac_address_with_both_bad_parameters_raises_invalid_mac_address_format_exception():
     with pytest.raises(InvalidMacAddressFormat):
         make_mac_address('00:00:00', '00:00:00')
+
+
+def test_convert_int_to_mac_address():
+    assert int_to_mac_address(0) == '00:00:00:00:00:00'
+    assert int_to_mac_address(16) == '00:00:00:00:00:10'
+    assert int_to_mac_address(20) == '00:00:00:00:00:14'
