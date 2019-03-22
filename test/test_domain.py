@@ -2,7 +2,7 @@ import pytest
 
 from broadsign.domain import Domain
 
-from broadsign.exceptions import InvalidMacAddressFormat
+from broadsign.exceptions import InvalidMacAddressFormat, InvalidMacAddressDomain
 
 
 def test_constructor():
@@ -16,22 +16,25 @@ def test_constructor():
 
 
 def test_add_valid_mac_address():
-    domain = Domain(None, None, [])
-    domain.add_mac_address('00:00:00:00:00:00')
-    assert domain.mac_addresses[0] == '00:00:00:00:00:00'
-    domain.add_mac_address('00:00:00:00:00:01')
-    assert domain.mac_addresses[1] == '00:00:00:00:00:01'
-    domain.add_mac_address('FF:FF:FF:FF:FF:FF')
-    assert domain.mac_addresses[2] == 'FF:FF:FF:FF:FF:FF'
+    domain = Domain(int('1234', 16), None, [])
+    domain.add_mac_address('12:34:56:78:9A:BC')
+    assert domain.mac_addresses[0] == '12:34:56:78:9A:BC'
 
 
 def test_add_mac_address_with_invalid_character_raises_invalid_mac_address_format_exception():
-    domain = Domain(None, None, [])
     with pytest.raises(InvalidMacAddressFormat):
-        domain.add_mac_address('GG:GG:GG:GG:GG:GG')
+        Domain(None, None, []).add_mac_address('GG:GG:GG:GG:GG:GG')
 
 
 def test_add_mac_address_with_too_few_characters_raises_invalid_mac_address_format_exception():
-    domain = Domain(None, None, [])
     with pytest.raises(InvalidMacAddressFormat):
-        domain.add_mac_address('00:00:00')
+        Domain(None, None, []).add_mac_address('00:00:00')
+
+
+def test_prevent_adding_mac_addresses_that_do_not_match_the_domain_id():
+    with pytest.raises(InvalidMacAddressDomain):
+        Domain(int('0000', 16), None, []).add_mac_address('00:01:00:00:00:00')
+    with pytest.raises(InvalidMacAddressDomain):
+        Domain(int('0000', 16), None, []).add_mac_address('FF:FF:00:00:00:00')
+    with pytest.raises(InvalidMacAddressDomain):
+        Domain(int('FFFF', 16), None, []).add_mac_address('FF:FE:00:00:00:00')
