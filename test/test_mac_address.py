@@ -2,7 +2,7 @@ import pytest
 
 from broadsign.exceptions import MacAddressTooSmallError
 from broadsign.mac_address import int_to_mac_address, get_mac_address_char_length, \
-    get_sub_mac_address_char_length, get_domain_id_from_mac_address
+    get_sub_mac_address_char_length, get_domain_id_from_mac_address, is_mac_address_matching_id
 
 
 def test_convert_int_to_mac_address():
@@ -37,3 +37,10 @@ def test_get_domain_id_from_mac_address():
     assert get_domain_id_from_mac_address('AA:AA:12:34:56:78') == 43690
     assert get_domain_id_from_mac_address('BB:BB:12:34:56:78') == 48059
     assert get_domain_id_from_mac_address('CC:CC:12:34:56:78') == 52428
+
+
+def test_is_mac_address_matching_id():
+    assert is_mac_address_matching_id(0, '00:00')
+    assert is_mac_address_matching_id(16, '00:10:42')
+    assert not is_mac_address_matching_id(0, '12:34')
+    assert not is_mac_address_matching_id(16, 'AA:10:42')

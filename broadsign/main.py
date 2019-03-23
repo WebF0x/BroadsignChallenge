@@ -25,7 +25,7 @@ def main():
 
     print('Question 2')
     print('\tAssumption: A domain ID is always between 0x0000 and 0xFFFF to fit in the 2 first bytes')
-    print('\tAssumption: A domain ID is always between 0x0000 and 0xFFFF to fit in the 2 first bytes')
+    print('\tAssumption: We want to prevent adding an invalid address or an address to the wrong domain')
     print('Creating the 3 domains')
     d1 = Domain(43690, 'domain 1', [])
     d2 = Domain(48059, 'domain 2', [])

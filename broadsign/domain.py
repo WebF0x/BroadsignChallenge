@@ -1,6 +1,6 @@
 from broadsign.exceptions import MacAddressFormatError, MacAddressDomainError
-from broadsign.mac_address import DOMAIN_ID_CHAR_LENGTH, int_to_mac_address, \
-    is_valid_mac_address
+from broadsign.mac_address import int_to_mac_address, \
+    is_valid_mac_address, is_mac_address_matching_id
 
 
 class Domain(object):
@@ -13,14 +13,9 @@ class Domain(object):
     def add_mac_address(self, mac_address):
         if not is_valid_mac_address(mac_address, self.nb_bytes_in_mac_address):
             raise MacAddressFormatError()
-        if not self.is_mac_address_matching_id(mac_address):
+        if not is_mac_address_matching_id(self.id, mac_address):
             raise MacAddressDomainError()
         self.mac_addresses.append(mac_address)
-
-    def is_mac_address_matching_id(self, mac_address):
-        domain_id = mac_address[:DOMAIN_ID_CHAR_LENGTH]
-        hexadecimal_domain_id = domain_id.replace(':', '')
-        return int(hexadecimal_domain_id, 16) == self.id
 
     def get_next_unique_mac_address(self):
         for potential_next_address in range(self.get_min_address(), self.get_max_address() + 1):

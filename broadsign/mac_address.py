@@ -37,3 +37,9 @@ def get_domain_id_from_mac_address(mac_address):
     domain_string = mac_address[:5]
     domain_id_hex = domain_string.replace(':', '')
     return int(domain_id_hex, 16)
+
+
+def is_mac_address_matching_id(id, mac_address):
+    domain_id = mac_address[:DOMAIN_ID_CHAR_LENGTH]
+    hexadecimal_domain_id = domain_id.replace(':', '')
+    return int(hexadecimal_domain_id, 16) == id
