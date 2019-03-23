@@ -1,28 +1,33 @@
+import re
 from textwrap import wrap
 
-import netaddr
-from netaddr import EUI
+from broadsign.exceptions import MacAddressTooSmallError
 
-from broadsign.exceptions import InvalidMacAddressFormat
-
-MAC_ADDRESS_CHAR_LENGTH = len('00:00:00:00:00:00')
 DOMAIN_ID_CHAR_LENGTH = len('00:00')
-SUB_MAC_ADDRESS_CHAR_LENGTH = len('00:00:00:00')
 
 
-def make_mac_address(domain_id, sub_mac_address):
-    if len(domain_id) != DOMAIN_ID_CHAR_LENGTH:
-        raise InvalidMacAddressFormat()
-    if len(sub_mac_address) != SUB_MAC_ADDRESS_CHAR_LENGTH:
-        raise InvalidMacAddressFormat()
-    try:
-        return EUI(domain_id + ':' + sub_mac_address)
-    except netaddr.core.AddrFormatError:
-        raise InvalidMacAddressFormat()
+def is_valid_mac_address(mac_address, nb_bytes_in_mac_address):
+    regexp_string = '(?:[0-9a-fA-F]:?){%s}' % (nb_bytes_in_mac_address * 2)
+    mac_address_regexp = re.compile(regexp_string)
+    return mac_address_regexp.match(mac_address)
 
 
-def int_to_mac_address(int_address):
+def int_to_mac_address(int_address, nb_bytes_in_mac_address):
     hex_address = format(int_address, 'X')
-    left_padded_hex_address = hex_address.zfill(12)
+    left_padded_hex_address = hex_address.zfill(nb_bytes_in_mac_address * 2)
     address_bytes = wrap(left_padded_hex_address, 2)
     return ':'.join(address_bytes)
+
+
+def get_mac_address_char_length(nb_bytes_in_mac_address):
+    nb_digits = nb_bytes_in_mac_address * 2
+    nb_colons = nb_bytes_in_mac_address - 1 if nb_bytes_in_mac_address else 0
+    return nb_digits + nb_colons
+
+
+def get_sub_mac_address_char_length(nb_bytes_in_mac_address):
+    if nb_bytes_in_mac_address < 2:
+        raise MacAddressTooSmallError()
+    if nb_bytes_in_mac_address == 2:
+        return 0
+    return get_mac_address_char_length(nb_bytes_in_mac_address) - DOMAIN_ID_CHAR_LENGTH - 1

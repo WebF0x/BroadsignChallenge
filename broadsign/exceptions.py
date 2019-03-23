@@ -1,6 +1,10 @@
-class InvalidMacAddressFormat(Exception):
+class MacAddressFormatError(Exception):
     pass
 
 
-class InvalidMacAddressDomain(Exception):
+class MacAddressDomainError(Exception):
+    pass
+
+
+class MacAddressTooSmallError(Exception):
     pass
