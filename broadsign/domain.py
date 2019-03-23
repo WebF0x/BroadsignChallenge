@@ -1,5 +1,5 @@
 from broadsign.exceptions import MacAddressFormatError, MacAddressDomainError
-from broadsign.mac_address import DOMAIN_ID_CHAR_LENGTH, int_to_mac_address, get_mac_address_char_length, \
+from broadsign.mac_address import DOMAIN_ID_CHAR_LENGTH, int_to_mac_address, \
     is_valid_mac_address
 
 

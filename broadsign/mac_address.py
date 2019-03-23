@@ -31,3 +31,9 @@ def get_sub_mac_address_char_length(nb_bytes_in_mac_address):
     if nb_bytes_in_mac_address == 2:
         return 0
     return get_mac_address_char_length(nb_bytes_in_mac_address) - DOMAIN_ID_CHAR_LENGTH - 1
+
+
+def get_domain_id_from_mac_address(mac_address):
+    domain_string = mac_address[:5]
+    domain_id_hex = domain_string.replace(':', '')
+    return int(domain_id_hex, 16)
