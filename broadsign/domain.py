@@ -25,7 +25,10 @@ class Domain(object):
         return None
 
     def get_min_address(self):
-        return self.id * 256 ** (self.nb_bytes_in_mac_address - 2)
+        nb_bytes_in_sub_mac_address = (self.nb_bytes_in_mac_address - 2)
+        return self.id * 256 ** nb_bytes_in_sub_mac_address
 
     def get_max_address(self):
-        return (self.id + 1) * 256 ** (self.nb_bytes_in_mac_address - 2) - 1
+        nb_bytes_in_sub_mac_address = (self.nb_bytes_in_mac_address - 2)
+        next_id = self.id + 1
+        return next_id * 256 ** nb_bytes_in_sub_mac_address - 1

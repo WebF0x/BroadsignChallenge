@@ -7,7 +7,8 @@ DOMAIN_ID_CHAR_LENGTH = len('00:00')
 
 
 def is_valid_mac_address(mac_address, nb_bytes_in_mac_address):
-    regexp_string = '(?:[0-9a-fA-F]:?){%s}' % (nb_bytes_in_mac_address * 2)
+    hexadecimal_character_regexp = '[0-9a-fA-F]'
+    regexp_string = '(?:%s:?){%s}' % (hexadecimal_character_regexp, nb_bytes_in_mac_address * 2)
     mac_address_regexp = re.compile(regexp_string)
     return mac_address_regexp.match(mac_address)
 
@@ -40,6 +41,4 @@ def get_domain_id_from_mac_address(mac_address):
 
 
 def is_mac_address_matching_id(id, mac_address):
-    domain_id = mac_address[:DOMAIN_ID_CHAR_LENGTH]
-    hexadecimal_domain_id = domain_id.replace(':', '')
-    return int(hexadecimal_domain_id, 16) == id
+    return get_domain_id_from_mac_address(mac_address) == id

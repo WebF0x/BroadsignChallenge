@@ -30,6 +30,7 @@ def main():
     d1 = Domain(43690, 'domain 1', [])
     d2 = Domain(48059, 'domain 2', [])
     d3 = Domain(52428, 'domain 3', [])
+    print('Filling domains with 10 MAC addresses each')
     fill_domain_with_n_unique_mac_addresses(d1, 10)
     fill_domain_with_n_unique_mac_addresses(d2, 10)
     fill_domain_with_n_unique_mac_addresses(d3, 10)
