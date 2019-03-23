@@ -51,3 +51,10 @@ For example, here is the domain ID of the MAC address "BB:BB:42:42:42:42"
 ID: 48059
 ```
 
+## Run it yourself
+
+```
+git clone https://github.com/WebF0x/BroadsignChallenge.git
+cd Broadsign/
+python main.py
+```
